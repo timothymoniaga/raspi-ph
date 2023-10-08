@@ -17,5 +17,3 @@ predicted_ph = known_ph[closest_index]
 
 print(f"Predicted pH value: {predicted_ph: .2f}")
 
-
-
