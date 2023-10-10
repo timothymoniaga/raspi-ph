@@ -11,13 +11,13 @@ if not os.path.exists('images'):
 
 def capture_image (filename):
     with picamera.PiCamera() as camera:
-        camera.resolution = (1024,768)
+        camera.resolution = (2464,2464)
         camera.awb_mode = 'auto'
         camera.brightness = 55
         camera.contrast = 10
         camera.saturation = -5
         camera.sharpness = 10
-        camera.iso = 200
+        camera.iso = 100
         camera.exposure_compensation = 0
         camera.exposure_mode = 'auto'
         camera.meter_mode = 'average'
