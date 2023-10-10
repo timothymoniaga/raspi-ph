@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-
+# For 5x5 cm picture (25cm^2)
 if not os.path.exists('images'):
     os.makedirs('images')
 
