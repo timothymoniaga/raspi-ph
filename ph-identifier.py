@@ -5,6 +5,8 @@ import numpy as np
 import cv2
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+import RPi.GPIO as GPIO
+
 # For 5x5 cm picture (25cm^2)
 if not os.path.exists('images'):
     os.makedirs('images')
@@ -75,13 +77,38 @@ def estimate_ph (new_rgb):
     distances = np.linalg.norm(known_rgb - new_rgb, axis=1)
 
     closest_index = np.argmin(distances)
-    
+
     predicted_ph = known_ph[closest_index]
 
     return(round(predicted_ph, 1))
 
+def start_pumps ():
+    GPIO.setmode(GPIO.BCM)
+    pin_number = 18 #subject to change
+    GPIO.setup(pin_number, GPIO.OUT)
+
+    try:
+        while True:
+            command = input("Enter 'on' to turn on, 'off' to turn off, 'quit' to exit: ")
+
+            if command =="on":
+                GPIO.output(pin_number, GPIO.HIGH)
+                print("GPIO pin turned on!")
+
+            elif command == "off":
+                GPIO.output(pin_number, GPIO.LOW)
+                print("GPIO pin turned off!")
+
+            elif ccommand == "quit":
+                break
+            else:
+                print("Invalid command. Try again.")
+
+
 if __name__ == "__main__":
 
+    start_pumps()
+    input("Press enter to take image and read PH")
     num_files = len(os.listdir('images'))
     filename = f"images/image{num_files +1}.jpg"
     capture_image(filename)
