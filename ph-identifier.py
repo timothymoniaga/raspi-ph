@@ -6,6 +6,7 @@ import cv2
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import RPi.GPIO as GPIO
+import time
 
 # For 5x5 cm picture (25cm^2)
 if not os.path.exists('images'):
@@ -82,27 +83,87 @@ def estimate_ph (new_rgb):
 
     return(round(predicted_ph, 1))
 
-def start_pumps ():
+def pin_pwm_time(pin_number, timer, power):
+
     GPIO.setmode(GPIO.BCM)
-    pin_number = 18 #subject to change
     GPIO.setup(pin_number, GPIO.OUT)
+    pwm = GPIO.PWM(pin_number, 100)
+    pwm.start(0)
+    
+    duty_cycle = float(power)
+    pwm.ChangeDutyCycle(duty_cycle)
+
+    # hardcoded for the LED pin
+    if pin_number == 12:
+        print("calculationg values...")
+        # call image taking and calculation functions
+
+    time.sleep(timer)
+
+    GPIO.cleanup()
+    pwm.stop()
+
+def pin_on(pin_number, on_flag):
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(pin_number, GPIO.OUT)
+    
+    if on_flag:
+        GPIO.output(pin_number, GPIO.HIGH)
+
+    else: 
+        GPIO.output(pin_number, GPIO.LOW)
+
+
+
+
+def start_pumps ():
+    sample_pump = 26 #sample water
+    led = 12 
+    dosing_pump = 13
+    washing_pump = 6
+    mixing_pump = 5
+    valve = 16
+
+
+    #sequence
+    # sample pump on
+    # sample pump off
+    # dosing pump on
+    # dosing pump off
+    # mixing pump on 
+    # mixing pump off
+    # close valve
+    # turn LED on 
+    # take image
+    # turn LED off
+    # calculate PH
+    # open valve
+    # washing pump on
+    # washing pump off
 
     try:
-        while True:
-            command = input("Enter 'on' to turn on, 'off' to turn off, 'quit' to exit: ")
+        # sample pump
+        pin_pwm_time(sample_pump, 5, 75)
+        # dosing pump
+        pin_pwm_time(dosing_pump, 1, 25)
+        # mixing pump
+        pin_pwm_time(mixing_pump, 10, 100)
+        # open valve
+        pin_on(valve, True)
+        #LED
+        pin_pwm_time(led, 5, 10)
+        # Image and calculation is taken inside the pwm pin function
 
-            if command =="on":
-                GPIO.output(pin_number, GPIO.HIGH)
-                print("GPIO pin turned on!")
+        # close valve
+        pin_on(valve, False)
 
-            elif command == "off":
-                GPIO.output(pin_number, GPIO.LOW)
-                print("GPIO pin turned off!")
-
-            elif ccommand == "quit":
-                break
-            else:
-                print("Invalid command. Try again.")
+        # washing pump
+        pin_pwm_time(washing_pump, 15, 100)
+        
+    except KeyboardInterrupt:
+        print("Exiting...")
+    finally:
+        GPIO.cleanup()
 
 
 if __name__ == "__main__":
