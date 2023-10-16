@@ -60,6 +60,16 @@ def pwm_for_duration(pin, duty_cycle, duration):
         pwm.stop()
         print(f"Stopped PWM on pin {pin}.")
 
+def turn_on_led_indefinitely():
+    pin = 12
+    duty_cycle = 3
+    GPIO.setup(pin, GPIO.OUT)
+    
+    pwm = GPIO.PWM(pin, 100)  # Frequency is hardcoded to 100Hz
+    pwm.start(duty_cycle)
+    print(f"LED (Pin {pin}) turned on indefinitely with {duty_cycle}% duty cycle.")
+
+
 
 def sample_water():
     digital_for_duration(23, 1.7)
@@ -150,7 +160,7 @@ def run_sequence():
         sample_water()
         dosing_pump()
         mixing_pump()
-        turn_on_led()
+        turn_on_led_indefinitely()
         
         filename = capture_image()
         
