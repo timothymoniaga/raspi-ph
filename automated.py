@@ -63,7 +63,7 @@ def mixing_pump():
 def turn_on_led():
     pwm_for_duration(12, 3, 0)  # Assuming you want the LED to stay on indefinitely
 
-def capture_and_show_image():
+def capture_image():
 
     num_files = len(os.listdir('photos'))
     filename = f"photos/image{num_files + 1}.jpg"
@@ -139,8 +139,7 @@ def run_sequence():
         mixing_pump()
         turn_on_led()
         
-        filename = "captured_image.jpg"
-        capture_and_show_image(filename)
+        filename = capture_image()
         
         rgb_values = get_median_rgb(filename)
         ph_value = estimate_ph_value(rgb_values)
