@@ -5,7 +5,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 def digital_for_duration(pin, duration):
-    if pin == 16:  # If the chosen pin is for the Mixing pump
+    if pin == 21:  # If the chosen pin is for the Washing pump
         GPIO.setup(20, GPIO.OUT)  # Set up the Valve & pump-out pin
         GPIO.output(20, GPIO.HIGH)  # Open the Valve
         print("Valve (Pin 20) opened.")
