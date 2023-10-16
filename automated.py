@@ -31,8 +31,10 @@ def digital_for_duration(pin, duration):
     except KeyboardInterrupt:
         print(f"\nInterrupted! Turning off pin {pin} immediately.")
     
-    GPIO.output(pin, GPIO.LOW)
-    print(f"Pin {pin} turned off.")
+    if duration != 0:
+        GPIO.output(pin, GPIO.LOW)
+        print(f"Pin {pin} turned off.")
+    
 
 def pwm_for_duration(pin, duty_cycle, duration):
     GPIO.setup(pin, GPIO.OUT)
@@ -82,7 +84,8 @@ def capture_image():
         
         # Capture the image immediately
         camera.capture(filename)
-        
+        print(f"Captured image saved as: {filename}")
+
         return filename
         # Display the captured image
         # img = cv2.imread(filename)
