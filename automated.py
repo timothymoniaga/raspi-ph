@@ -54,7 +54,7 @@ def pwm_for_duration(pin, duty_cycle, duration):
 
 
 def sample_water():
-    digital_for_duration(23, 2.7)
+    digital_for_duration(23, 1.7)
 
 def dosing_pump():
     pwm_for_duration(13, 15, 2.5)
