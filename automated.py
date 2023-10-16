@@ -62,7 +62,7 @@ def pwm_for_duration(pin, duty_cycle, duration):
 
 def turn_on_led_indefinitely():
     pin = 12
-    duty_cycle = 3
+    duty_cycle = 40
     GPIO.setup(pin, GPIO.OUT)
     
     pwm = GPIO.PWM(pin, 100)  # Frequency is hardcoded to 100Hz
@@ -101,8 +101,13 @@ def capture_image():
         camera.meter_mode = 'average'
         
         # Capture the image immediately
+        camera.start_preview()
+        time.sleep(2)  # Let the camera adjust for 2 seconds
         camera.capture(filename)
+        camera.stop_preview()
         print(f"Captured image saved as: {filename}")
+
+        
 
         return filename
         # Display the captured image
