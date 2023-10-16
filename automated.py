@@ -74,7 +74,7 @@ def sample_water():
     digital_for_duration(23, 1.7)
 
 def dosing_pump():
-    pwm_for_duration(13, 15, 2.5)
+    pwm_for_duration(13, 25, 3.5)
 
 def mixing_pump():
     digital_for_duration(16, 3)
