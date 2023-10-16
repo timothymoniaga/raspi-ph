@@ -8,6 +8,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 LED_PIN = 12
 GPIO.setup(LED_PIN, GPIO.OUT)
+pwm_led = GPIO.PWM(LED_PIN, 100)  # Set up PWM on pin 12 with a frequency of 100Hz
 
 if not os.path.exists('camera'):
     os.makedirs('camera')
@@ -25,8 +26,8 @@ def capture_image(filename):
         camera.exposure_mode = 'auto'
         camera.meter_mode = 'average'
 
-        # Turn on the LED
-        GPIO.output(LED_PIN, GPIO.HIGH)
+        # Start PWM with 3% duty cycle
+        pwm_led.start(3)
 
         camera.start_preview()
         print("press 's' to save the image...")
@@ -43,8 +44,8 @@ def capture_image(filename):
                         running = False
         camera.stop_preview()
 
-        # Turn off the LED
-        GPIO.output(LED_PIN, GPIO.LOW)
+        # Stop the PWM
+        pwm_led.stop()
 
         pygame.quit()
 
