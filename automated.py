@@ -130,7 +130,9 @@ def estimate_ph_value(rgb_values):
     return(round(predicted_ph, 1))
 
 def washing_pump():
-    digital_for_duration(21, 2) 
+    digital_for_duration(21, 1) 
+    time.sleep(3)
+    digital_for_duration(21,3)
 
 def run_sequence():
     try:
