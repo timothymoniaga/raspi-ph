@@ -5,9 +5,15 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 def digital_for_duration(pin, duration):
-    if pin == 21:  # If the chosen pin is for the Washing pump
+    if pin == 16:  # If the chosen pin is for the Mixing pump
         GPIO.setup(20, GPIO.OUT)  # Set up the Valve & pump-out pin
-        GPIO.output(20, GPIO.HIGH)  # Turn on the Valve & pump-out
+        GPIO.output(20, GPIO.HIGH)  # Open the Valve
+        print("Valve (Pin 20) opened.")
+    
+    elif pin == 23:  # If the chosen pin is for the Sample water
+        GPIO.setup(20, GPIO.OUT)  # Set up the Valve & pump-out pin
+        GPIO.output(20, GPIO.LOW)  # Close the Valve
+        print("Valve (Pin 20) closed.")
     
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
@@ -20,10 +26,6 @@ def digital_for_duration(pin, duration):
     
     GPIO.output(pin, GPIO.LOW)
     print(f"Pin {pin} turned off.")
-    
-    if pin == 21:  # If the chosen pin was for the Washing pump
-        GPIO.output(20, GPIO.LOW)  # Turn off the Valve & pump-out
-        print("Pin 20 (Valve & pump-out) turned off.")
 
 def pwm_for_duration(pin, duty_cycle, duration):
     GPIO.setmode(GPIO.BCM)
@@ -58,7 +60,7 @@ def main():
                 print("1. Sample water (Pin 23)")
                 print("2. Washing pump (Pin 21)")
                 print("3. Mixing pump (Pin 16)")
-                print("4. Valve & pump-out (Pin 20)")
+                print("4. Valve (Pin 20)")
                 
                 digital_choice = input("Enter your choice: ")
                 if digital_choice == "1":
