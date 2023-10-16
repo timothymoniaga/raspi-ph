@@ -1,6 +1,13 @@
 import os
 import picamera 
 import pygame
+import RPi.GPIO as GPIO
+
+# Set up GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+LED_PIN = 12
+GPIO.setup(LED_PIN, GPIO.OUT)
 
 if not os.path.exists('camera'):
     os.makedirs('camera')
@@ -18,6 +25,9 @@ def capture_image(filename):
         camera.exposure_mode = 'auto'
         camera.meter_mode = 'average'
 
+        # Turn on the LED
+        GPIO.output(LED_PIN, GPIO.HIGH)
+
         camera.start_preview()
         print("press 's' to save the image...")
 
@@ -32,6 +42,10 @@ def capture_image(filename):
                         print(f"Image saved to {filename}")
                         running = False
         camera.stop_preview()
+
+        # Turn off the LED
+        GPIO.output(LED_PIN, GPIO.LOW)
+
         pygame.quit()
 
 if __name__ == "__main__":
