@@ -3,6 +3,7 @@ import time
 import picamera
 import cv2
 import numpy as np
+import os
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
