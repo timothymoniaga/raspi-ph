@@ -28,7 +28,6 @@ def digital_for_duration(pin, duration):
     print(f"Pin {pin} turned off.")
 
 def pwm_for_duration(pin, duty_cycle, duration):
-    GPIO.setmode(GPIO.BCM)
     GPIO.setup(pin, GPIO.OUT)
     
     pwm = GPIO.PWM(pin, 100)  # Frequency is hardcoded to 100Hz
@@ -42,7 +41,6 @@ def pwm_for_duration(pin, duty_cycle, duration):
         print("\nExiting early due to user interrupt.")
     finally:
         pwm.stop()
-        GPIO.cleanup()
         print(f"Stopped PWM on pin {pin}.")
 
 def main():
