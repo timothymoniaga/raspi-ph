@@ -1,29 +1,20 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
 def digital_for_duration(pin, duration):
-    if pin == 21:  # If the chosen pin is for the Washing pump
-        GPIO.setup(20, GPIO.OUT)  # Set up the Valve & pump-out pin
-        GPIO.output(20, GPIO.HIGH)  # Turn on the Valve & pump-out
-    
+    GPIO.setmode(GPIO.BCM)
     GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.HIGH)
-    print(f"Pin {pin} turned on for {duration} seconds.")
     
     try:
+        GPIO.output(pin, GPIO.HIGH)
+        print(f"Pin {pin} turned ON for {duration} seconds. Press Ctrl+C to exit early.")
         time.sleep(duration)
     except KeyboardInterrupt:
-        print(f"\nInterrupted! Turning off pin {pin} immediately.")
-    
-    GPIO.output(pin, GPIO.LOW)
-    print(f"Pin {pin} turned off.")
-    
-    if pin == 21:  # If the chosen pin was for the Washing pump
-        GPIO.output(20, GPIO.LOW)  # Turn off the Valve & pump-out
-        print("Pin 20 (Valve & pump-out) turned off.")
+        print("\nExiting early due to user interrupt.")
+    finally:
+        GPIO.output(pin, GPIO.LOW)
+        GPIO.cleanup()
+        print(f"Pin {pin} turned OFF.")
 
 def pwm_for_duration(pin, duty_cycle, duration):
     GPIO.setmode(GPIO.BCM)
