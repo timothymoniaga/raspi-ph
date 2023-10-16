@@ -122,7 +122,7 @@ def start_pumps ():
     dosing_pump = 13
     washing_pump = 6
     mixing_pump = 5
-    valve = 16
+    valve = 16 #this is the bottom where we get rif of the water
 
 
     #sequence
@@ -142,24 +142,25 @@ def start_pumps ():
     # washing pump off
 
     try:
+        # close the valve
+        pin_on(valve, False)
         # sample pump
-        pin_pwm_time(sample_pump, 5, 75)
+        pin_pwm_time(sample_pump, 5, 75) # on/off no need pwm
         # dosing pump
-        pin_pwm_time(dosing_pump, 1, 25)
+        pin_pwm_time(dosing_pump, 2.7, 12.5)
         # mixing pump
-        pin_pwm_time(mixing_pump, 10, 100)
-        # open valve
-        pin_on(valve, True)
+        pin_pwm_time(mixing_pump, 10, 100) 
         #LED
         pin_pwm_time(led, 5, 10)
         # Image and calculation is taken inside the pwm pin function
 
-        # close valve
-        pin_on(valve, False)
+        # open valve
+        pin_on(valve, True)
 
         # washing pump
         pin_pwm_time(washing_pump, 15, 100)
-        
+
+
     except KeyboardInterrupt:
         print("Exiting...")
     finally:
