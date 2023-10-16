@@ -12,12 +12,21 @@ if not os.path.exists('photos'):
     os.makedirs('photos')
 
 def digital_for_duration(pin, duration):
-    if pin == 21:  # If the chosen pin is for the Washing pump
+    # If duration is zero, turn on the pin and return immediately
+    if duration == 0:
+        GPIO.setup(pin, GPIO.OUT)
+        GPIO.output(pin, GPIO.HIGH)
+        print(f"Pin {pin} turned on indefinitely.")
+        return
+
+    # For the Washing pump
+    if pin == 21:
         GPIO.setup(20, GPIO.OUT)  # Set up the Valve & pump-out pin
         GPIO.output(20, GPIO.HIGH)  # Open the Valve
         print("Valve (Pin 20) opened.")
     
-    elif pin == 23:  # If the chosen pin is for the Sample water
+    # For the Sample water
+    elif pin == 23:
         GPIO.setup(20, GPIO.OUT)  # Set up the Valve & pump-out pin
         GPIO.output(20, GPIO.LOW)  # Close the Valve
         print("Valve (Pin 20) closed.")
@@ -31,10 +40,9 @@ def digital_for_duration(pin, duration):
     except KeyboardInterrupt:
         print(f"\nInterrupted! Turning off pin {pin} immediately.")
     
-    if duration != 0:
-        GPIO.output(pin, GPIO.LOW)
-        print(f"Pin {pin} turned off.")
-    
+    GPIO.output(pin, GPIO.LOW)
+    print(f"Pin {pin} turned off.")
+
 
 def pwm_for_duration(pin, duty_cycle, duration):
     GPIO.setup(pin, GPIO.OUT)
